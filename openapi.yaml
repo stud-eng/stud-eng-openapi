@@ -1,0 +1,171 @@
+openapi: 3.0.1
+info:
+  title: "STEP1"
+  description: ""
+  version: ""
+paths:
+  /articles:
+    post:
+      tags:
+      - articles
+      summary: 記事作成
+      operationId: createArticle
+      requestBody:
+        description: 記事作成データ
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: タイトル
+                  example: CRUDでプロパティが変わるモデルをOpenAPIで書くときの定義分割
+                content:
+                  type: string
+                  description: 内容
+                  example: |
+                    ヘッダー
+                    内容1
+                    内容2
+                review_user_id:
+                  type: integer
+                  format: int64
+                  description: 投稿時承認者のユーザーID
+                  example: 2
+                notify_by_sns:
+                  type: boolean
+                  description: 投稿時にSNS通知する
+                  example: true
+      responses:
+        default:
+          description: 作成済み記事
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+
+    get:
+      tags:
+      - articles
+      summary: 記事一覧取得
+      operationId: getArticleList
+      responses:
+        default:
+          description: 記事一覧
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Article'
+
+
+  /articles/{id}:
+    get:
+      tags:
+      - articles
+      summary: 記事取得
+      operationId: getArticle
+      parameters:
+      - $ref: '#/components/parameters/ArticleId'
+      responses:
+        default:
+          description: 記事
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+
+    patch:
+      tags:
+      - articles
+      summary: 記事更新
+      operationId: updateArticle
+      parameters:
+      - $ref: '#/components/parameters/ArticleId'
+      requestBody:
+        description: 記事更新データ
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: タイトル
+                  example: CRUDでプロパティが変わるモデルをOpenAPIで書くときの定義分割
+                content:
+                  type: string
+                  description: 内容
+                  example: |
+                    ヘッダー
+                    内容1
+                    内容2
+      responses:
+        default:
+          description: 更新済み記事
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+
+    delete:
+      tags:
+      - articles
+      summary: 記事削除
+      operationId: deleteArticle
+      parameters:
+      - $ref: '#/components/parameters/ArticleId'
+      responses:
+        default:
+          description: 削除済み記事
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Article'
+
+components:
+  parameters:
+    ArticleId:
+      name: id
+      in: path
+      description: 記事ID
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  schemas:
+    Article:
+      type: object
+      description: 記事
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 記事ID
+          example: 1
+        user_id:
+          type: integer
+          format: int64
+          description: 投稿者のユーザーID
+          example: 4
+        title:
+          type: string
+          description: タイトル
+          example: CRUDでプロパティが変わるモデルをOpenAPIで書くときの定義分割
+        content:
+          type: string
+          description: 内容
+          example: |
+            ヘッダー
+            内容1
+            内容2
+        review_user_id:
+          type: integer
+          format: int64
+          description: 投稿時承認者のユーザーID
+          example: 2
